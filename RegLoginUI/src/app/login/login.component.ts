@@ -54,7 +54,8 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate(['/login']);
+                    //this.router.navigate(['/login']);
+                    window.location.href = 'http://localhost:4201/?username=' + this.f.username.value;
                 },
                 error => {
                     this.alertService.error(error);
