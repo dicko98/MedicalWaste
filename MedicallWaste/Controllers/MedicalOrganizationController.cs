@@ -37,11 +37,11 @@ namespace MedicallWaste.Controllers
             return Ok(organizations);
         }
 
-        [HttpGet(nameof(GetMedicalCompanyByLocation))]
-        public async Task<IActionResult> GetMedicalCompanyByLocation(string location)
-        {
-            return "value";
-        }
+        //[HttpGet(nameof(GetMedicalCompanyByLocation))]
+        //public async Task<IActionResult> GetMedicalCompanyByLocation(string location)
+        //{
+        //    return "value";
+        //}
 
         [HttpPost(nameof(CreateMedicalOrganization))]
         public async Task<IActionResult> CreateMedicalOrganization(string name, string location)

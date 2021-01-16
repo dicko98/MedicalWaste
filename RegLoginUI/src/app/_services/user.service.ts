@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { User } from '@/_models';
 
@@ -12,7 +12,12 @@ export class UserService {
     }
 
     register(user: User) {
-        return this.http.post(`${config.apiUrl}/users/register`, user);
+        const options = {
+            headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+          })
+          };
+        return this.http.post(`${config.apiUrl}/user/createuser`, JSON.stringify(user), options);
     }
 
     delete(id: number) {

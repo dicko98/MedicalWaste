@@ -76,9 +76,13 @@ namespace MedicallWaste
                                   {
                                       builder.WithOrigins("https://localhost:5001",
                                                           "https://localhost:5000",
-                                                          "https://localhost:44383"
-                                                          ).WithMethods("PUT", "DELETE", "GET"); ;
+                                                          "https://localhost:44383",
+                                                          "http://localhost:8080",
+                                                          "http://localhost:4201"
+                                                          ).WithMethods("PUT", "DELETE", "GET", "POST");
+                                      builder.AllowAnyHeader(); ;
                                   });
+                
             });
             //services.AddSwaggerDocument();
         }
