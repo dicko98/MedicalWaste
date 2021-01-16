@@ -33,10 +33,13 @@ namespace MedicallWaste.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet(nameof(GetAllUsers))]
+        public async Task<IActionResult> GetAllUsers()
         {
-            return "value";
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (users:ApplicationUser) RETURN users", new Dictionary<string, object>(), CypherResultMode.Set);
+            IList<ApplicationUser> users = ((IRawGraphClient)client).ExecuteGetCypherResults<ApplicationUser>(query).ToList();
+
+            return Ok(users);
         }
 
         [HttpPost(nameof(CreateUser))]
@@ -47,12 +50,12 @@ namespace MedicallWaste.Controllers
             var statementText = new StringBuilder();
             statementText.Append("CREATE (a:ApplicationUser {username: $username, password: $password, firstname: $firstname, lastname: $lastname})");
             var statementParameters = new Dictionary<string, object>
-        {
-            {"username", user.username},
-            {"password", user.password},
+            {
+                {"username", user.username},
+                {"password", user.password},
                 {"firstname", user.firstname },
                 {"lastname", user.lastname }
-        };
+            };
             var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString(), statementParameters));
             return StatusCode(201, "Node has been created in the database");
         }
@@ -70,12 +73,24 @@ namespace MedicallWaste.Controllers
             {
                 return Ok(applicationUsers);
             }
-
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost(nameof(WorksAtTransport))]
+        public async Task<IActionResult> WorksAtTransport(string username, Guid transportGuid)
         {
+            var works = new Neo4jClient.Cypher.CypherQuery("MATCH(u: ApplicationUser), (t: TransportCompany) WHERE u.username = '" + username + "' AND t.guid = '" + transportGuid + "' CREATE (u)-[r: WORKS_AT]->(t) RETURN type(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+            ((IRawGraphClient)client).ExecuteCypher(works);
+
+            return Ok(works);
+        }
+
+        [HttpPost(nameof(WorksAtLandfill))]
+        public async Task<IActionResult> WorksAtLandfill(string username, Guid landfillGuid)
+        {
+            var works = new Neo4jClient.Cypher.CypherQuery("MATCH(u: ApplicationUser), (l: LandfillOrganization) WHERE u.username = '" + username + "' AND l.guid = '" + landfillGuid + "' CREATE (u)-[r: WORKS_AT]->(l) RETURN type(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+            ((IRawGraphClient)client).ExecuteCypher(works);
+
+            return Ok(works);
         }
 
         [HttpDelete("{id}")]

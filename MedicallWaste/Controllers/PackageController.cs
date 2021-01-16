@@ -30,20 +30,19 @@ namespace MedicallWaste.Controllers
         public async Task<IActionResult> GetPackage(string name)
         {
 
-            var q1 = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package) where package.name = '" + name + "' RETURN package", new Dictionary<string, object>(), CypherResultMode.Set);
-            IList<Package> records = ((IRawGraphClient)client).ExecuteGetCypherResults<Package>(q1).ToList();
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package) where package.name = '" + name + "' RETURN package", new Dictionary<string, object>(), CypherResultMode.Set);
+            IList<Package> packages = ((IRawGraphClient)client).ExecuteGetCypherResults<Package>(query).ToList();
 
-            return Ok(records);
+            return Ok(packages);
         }
 
         [HttpGet(nameof(GetAllPackages))]
         public async Task<IActionResult> GetAllPackages()
         {
-            var q1 = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package) RETURN " +
-                "package", new Dictionary<string, object>(), CypherResultMode.Set);
-            IList<Package> records = ((IRawGraphClient)client).ExecuteGetCypherResults<Package>(q1).ToList();
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package) RETURN package", new Dictionary<string, object>(), CypherResultMode.Set);
+            IList<Package> packages = ((IRawGraphClient)client).ExecuteGetCypherResults<Package>(query).ToList();
 
-            return Ok(records);
+            return Ok(packages);
         }
 
         [HttpPost(nameof(CreatePackage))]
@@ -100,8 +99,17 @@ namespace MedicallWaste.Controllers
         [HttpDelete(nameof(DeleteConnectedPackage))]
         public void DeleteConnectedPackage(Package package)
         {
+            var session = driver.AsyncSession();
             session.RunAsync("OPTIONAL MATCH (package:Package)-[r]->() WHERE package.barcode = '" + package.barcode + "' DELETE r, package");
         }
 
+        [HttpPost(nameof(PickUpPackage))]
+        public async Task<IActionResult> PickUpPackage(Guid transportGuid, Guid barcode)
+        {
+            var pickup = new Neo4jClient.Cypher.CypherQuery("MATCH(t: TransportCompany),(p: Package) WHERE t.guid = '" + transportGuid + "' AND p.barcode = '" + barcode + "' CREATE (p)-[r: PICKEDUP_BY]->(t) RETURN type(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+            ((IRawGraphClient)client).ExecuteCypher(pickup);
+
+            return Ok(pickup);
+        }
     }
 }

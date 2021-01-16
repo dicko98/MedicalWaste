@@ -36,10 +36,14 @@ namespace MedicallWaste.Controllers
             return Ok(organizations);
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet(nameof(GetLandfillOrganization))]
+        public async Task<IActionResult> GetLandfillOrganization(string location)
         {
-            return "value";
+
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (l:LandfillOrganization) where l.location = '" + location + "' RETURN l", new Dictionary<string, object>(), CypherResultMode.Set);
+            IList<LandfillOrganization> organizations = ((IRawGraphClient)client).ExecuteGetCypherResults<LandfillOrganization>(query).ToList();
+
+            return Ok(organizations);
         }
 
         [HttpPost(nameof(CreateLandfillOrganization))]
@@ -53,14 +57,18 @@ namespace MedicallWaste.Controllers
             return Ok(landfill);
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPatch(nameof(ChangeName))]
+        public void ChangeName(LandfillOrganization organization)
         {
+            var session = driver.AsyncSession();
+            session.RunAsync("MATCH (org:LandfillOrganization) WHERE org.guid = '" + organization.guid + "' SET org.name = " + organization.name + " ");
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete(nameof(DeleteLandfillOrganization))]
+        public void DeleteLandfillOrganization(LandfillOrganization organization)
         {
+            var session = driver.AsyncSession();
+            session.RunAsync("MATCH (l:TransportCompany) WHERE l.guid = '" + organization.guid + "' DELETE l");
         }
     }
 }

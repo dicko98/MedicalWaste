@@ -36,10 +36,14 @@ namespace MedicallWaste.Controllers
             return Ok(organizations);
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet(nameof(GetTransportCompany))]
+        public async Task<IActionResult> GetTransportCompany(string location)
         {
-            return "value";
+
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (t:TransportCompany) where t.location = '" + location + "' RETURN t", new Dictionary<string, object>(), CypherResultMode.Set);
+            IList<TransportCompany> organizations = ((IRawGraphClient)client).ExecuteGetCypherResults<TransportCompany>(query).ToList();
+
+            return Ok(organizations);
         }
 
         [HttpPost(nameof(CreateTransportCompany))]
@@ -53,14 +57,27 @@ namespace MedicallWaste.Controllers
             return Ok(transport);
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost(nameof(StorePackage))]
+        public async Task<IActionResult> StorePackage(Guid transportGuid, Guid landfillGuid)
         {
+            var store = new Neo4jClient.Cypher.CypherQuery("MATCH(t: TransportCompany),(l: LandfillOrganization) WHERE t.guid = '" + transportGuid + "' AND l.guid = '" + landfillGuid + "' CREATE (t)-[r: STORED_TO]->(l) RETURN type(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+            ((IRawGraphClient)client).ExecuteCypher(store);
+
+            return Ok(store);
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete(nameof(DeleteTransportCompany))]
+        public void DeleteTransportCompany(TransportCompany transport)
         {
+            var session = driver.AsyncSession();
+            session.RunAsync("MATCH (t:TransportCompany) WHERE t.guid = '" + transport.guid + "' DELETE t");
+        }
+
+        [HttpDelete(nameof(DeleteConnectedTransportCompanies))]
+        public void DeleteConnectedTransportCompanies(TransportCompany transport)
+        {
+            var session = driver.AsyncSession();
+            session.RunAsync("OPTIONAL MATCH ()-[p]->(t:TransportCompany)->[s]-() WHERE t.guid = '" + transport.guid + "' DELETE p, s, t");
         }
     }
 }
