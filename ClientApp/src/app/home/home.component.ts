@@ -47,7 +47,7 @@ export class HomeComponent implements AfterViewInit {
     this.route.queryParams.subscribe(params => {
       this.username = params['username'];
   });
-   if(localStorage.getItem("username")==='undefined')
+   //if(localStorage.getItem("username")==='undefined')
       localStorage.setItem("username", this.username);
   }
 
