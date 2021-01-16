@@ -60,18 +60,41 @@ namespace MedicallWaste.Controllers
             return StatusCode(201, "Node has been created in the database");
         }
 
+        [HttpGet(nameof(GetMedicalUser))]
+        public async Task<IActionResult> GetMedicalUser(string username)
+        { 
+            var query = client.Cypher
+                .Match("(user:ApplicationUser)-[r:WORKS_AT]->(med:MedicalOrganization)")
+                .Return(() => new
+                {
+                    User = Return.As<ApplicationUser>("user"),
+                    MedOrg = Return.As<MedicalOrganization>("med")
+                });
+            var res = query.Results.FirstOrDefault();
+
+            ApplicationUserDTO applicationUserDTO = new ApplicationUserDTO
+            {
+                firstname = res.User.firstname,
+                lastname = res.User.lastname,
+                username = res.User.username,
+                orgname = res.MedOrg.name,
+                orglocation = res.MedOrg.location
+            };
+            return Ok(applicationUserDTO);
+        }
+
         [HttpPost(nameof(Login))]
         public async Task<IActionResult> Login([FromBody]LoginDTO login)
         {
             var user = new Neo4jClient.Cypher.CypherQuery("MATCH (user:ApplicationUser) WHERE user.username = '" + login.username + "' and user.password = '" + login.password + "' RETURN user", new Dictionary<string, object>(), CypherResultMode.Set);
-            ApplicationUser applicationUsers = ((IRawGraphClient)client).ExecuteGetCypherResults<ApplicationUser>(user).FirstOrDefault();
-            if(applicationUsers==null)
+            ApplicationUser applicationUser = ((IRawGraphClient)client).ExecuteGetCypherResults<ApplicationUser>(user).FirstOrDefault();
+            if(applicationUser==null)
             {
                 return BadRequest("Wrong username or password");
             }
             else
             {
-                return Ok(applicationUsers);
+                return Ok(applicationUser);
             }
         }
 
@@ -91,6 +114,13 @@ namespace MedicallWaste.Controllers
             ((IRawGraphClient)client).ExecuteCypher(works);
 
             return Ok(works);
+        }
+
+        [HttpPost(nameof(WorksAtMedical))]
+        public void WorksAtMedical(string username, Guid organization)
+        {
+            var session = driver.AsyncSession();
+            session.RunAsync("MATCH (o:MedicalOrganization),(u:ApplicationUser) WHERE o.guid = '" + organization + "' AND u.username = '" + username + "' CREATE(u) -[r: WORKS_AT]->(o) RETURN type(r)");
         }
 
         [HttpDelete("{id}")]
