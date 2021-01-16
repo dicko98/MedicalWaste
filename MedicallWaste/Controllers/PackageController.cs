@@ -53,21 +53,25 @@ namespace MedicallWaste.Controllers
             var user = new Neo4jClient.Cypher.CypherQuery("MATCH (user:ApplicationUser) WHERE user.username = '" + username +"' RETURN user", new Dictionary<string, object>(), CypherResultMode.Set);
             IList<ApplicationUser> applicationUsers = ((IRawGraphClient)client).ExecuteGetCypherResults<ApplicationUser>(user).ToList();
 
+            DateTime createDate = DateTime.UtcNow;
             try
             {
                 if (applicationUsers.Count == 0)
                 {
-                    var result = new Neo4jClient.Cypher.CypherQuery("CREATE (package:Package {barcode: '" + barcode + "', name: '" + name + "', weight: '" + weight + "'}), (user:ApplicationUser {username: '" + username + "'})", new Dictionary<string, object>(), CypherResultMode.Set);
+                    var result = new Neo4jClient.Cypher.CypherQuery("CREATE (package:Package {barcode: '" + barcode + "', name: '" + name + "', weight: '" + weight + "', datecreated: '" + createDate + "'}), (user:ApplicationUser {username: '" + username + "'})", new Dictionary<string, object>(), CypherResultMode.Set);
                     ((IRawGraphClient)client).ExecuteCypher(result);
 
-                    var relation = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package), (user:ApplicationUser) WHERE package.barcode = '" + barcode + "' AND user.username = '" + username + "' CREATE (package) -[r:MADE_BY]-> (user) RETURN TYPE(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+                    var relation = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package), (user:ApplicationUser) WHERE package.barcode = '" + barcode + "' AND user.username = '" + username + "' CREATE (user) -[r:MADE]-> (package) RETURN TYPE(r)", new Dictionary<string, object>(), CypherResultMode.Set);
                     ((IRawGraphClient)client).ExecuteCypher(relation);
                     return Ok(result);
                 }
                 else if (applicationUsers.Count != 0)
                 {
-                    var result = new Neo4jClient.Cypher.CypherQuery("CREATE(package: Package { barcode: '" + barcode + "', name: '" + name + "', weight: '" + weight + "'}", new Dictionary<string, object>(), CypherResultMode.Set);
+                    var result = new Neo4jClient.Cypher.CypherQuery("CREATE(package:Package {barcode: '" + barcode + "', name: '" + name + "', weight: '" + weight + "', datecreated: '" + createDate + "'})", new Dictionary<string, object>(), CypherResultMode.Set);
                     ((IRawGraphClient)client).ExecuteCypher(result);
+
+                    var relation = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package), (user:ApplicationUser) WHERE package.barcode = '" + barcode + "' AND user.username = '" + username + "' CREATE (user) -[r:MADE]-> (package) RETURN TYPE(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+                    ((IRawGraphClient)client).ExecuteCypher(relation);
 
                     return Ok(result);
                 }

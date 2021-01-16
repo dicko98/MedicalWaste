@@ -12,6 +12,7 @@ namespace MedicallWaste.Models
         public int weight { get; set; }
         public int pickedweight { get; set; }
         public int storedweight { get; set; }
+        public DateTime datecreated { get; set; }
         public MedicalOrganization medorganization { get; set; }
         public LandfillOrganization landfillorganization { get; set; }
         public TransportCompany transportcompany { get; set; }

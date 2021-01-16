@@ -78,7 +78,8 @@ namespace MedicallWaste
                                                           "https://localhost:5000",
                                                           "https://localhost:44383",
                                                           "http://localhost:8080",
-                                                          "http://localhost:4201"
+                                                          "http://localhost:4201",
+                                                          "http://192.168.2.148:4201"
                                                           ).WithMethods("PUT", "DELETE", "GET", "POST");
                                       builder.AllowAnyHeader(); ;
                                   });
