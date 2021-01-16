@@ -40,7 +40,10 @@ namespace MedicallWaste.Controllers
         [HttpGet(nameof(GetMedicalCompanyByLocation))]
         public async Task<IActionResult> GetMedicalCompanyByLocation(string location)
         {
-            return "value";
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (o: MedicalOrganization) WHERE o.location = '" + location + "' RETURN o", new Dictionary<string, object>(), CypherResultMode.Set);
+            IList<MedicalOrganization> organizations = ((IRawGraphClient)client).ExecuteGetCypherResults<MedicalOrganization>(query).ToList();
+
+            return Ok(organizations);
         }
 
         [HttpPost(nameof(CreateMedicalOrganization))]
@@ -64,7 +67,8 @@ namespace MedicallWaste.Controllers
         [HttpDelete(nameof(DeleteMedicalOrganization))]
         public void DeleteMedicalOrganization(MedicalOrganization organization)
         {
-
+            var session = driver.AsyncSession();
+            session.RunAsync("MATCH (org:MedicalOrganization) WHERE org.guid = '" + organization.guid + "' DELETE org");
         }
     }
 }

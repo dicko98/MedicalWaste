@@ -94,7 +94,14 @@ namespace MedicallWaste.Controllers
         public void DeletePackage(Package package)
         {
             var session = driver.AsyncSession();
-            session.RunAsync("MATCH (package:Package) WHERE package.name = '" + package.name + "' DELETE package");       
+            session.RunAsync("MATCH (package:Package) WHERE package.barcode = '" + package.barcode + "' DELETE package");
         }
+
+        [HttpDelete(nameof(DeleteConnectedPackage))]
+        public void DeleteConnectedPackage(Package package)
+        {
+            session.RunAsync("OPTIONAL MATCH (package:Package)-[r]->() WHERE package.barcode = '" + package.barcode + "' DELETE r, package");
+        }
+
     }
 }
