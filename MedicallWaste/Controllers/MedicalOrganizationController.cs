@@ -37,8 +37,8 @@ namespace MedicallWaste.Controllers
             return Ok(organizations);
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet(nameof(GetMedicalCompanyByLocation))]
+        public async Task<IActionResult> GetMedicalCompanyByLocation(string location)
         {
             return "value";
         }
@@ -59,8 +59,6 @@ namespace MedicallWaste.Controllers
         {
             var session = driver.AsyncSession();
             session.RunAsync("MATCH (o:MedicalOrganization),(u:ApplicationUser) WHERE o.name = '" + organization + "' AND u.username = '" + username + "' CREATE(o) -[r: HAS_EMPLOYEE]->(u) RETURN type(r)");
-           
-            //return StatusCode(201, "User has been added to Organization");
         }
 
         [HttpDelete(nameof(DeleteMedicalOrganization))]

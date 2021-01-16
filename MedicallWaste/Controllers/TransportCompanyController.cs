@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MedicallWaste.Models;
+using Microsoft.AspNetCore.Mvc;
 using Neo4j.Driver;
 using Neo4jClient;
+using Neo4jClient.Cypher;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +26,14 @@ namespace MedicallWaste.Controllers
             client = graphClient;
         }
 
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet(nameof(GetAllTransportCompanies))]
+        public async Task<IActionResult> GetAllTransportCompanies()
         {
-            return new string[] { "value1", "value2" };
+
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH(t: TransportCompany) RETURN t", new Dictionary<string, object>(), CypherResultMode.Set);
+            IList<TransportCompany> organizations = ((IRawGraphClient)client).ExecuteGetCypherResults<TransportCompany>(query).ToList();
+
+            return Ok(organizations);
         }
 
         [HttpGet("{id}")]
@@ -36,9 +42,15 @@ namespace MedicallWaste.Controllers
             return "value";
         }
 
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost(nameof(CreateTransportCompany))]
+        public async Task<IActionResult> CreateTransportCompany(string name, string location)
         {
+            Guid guid = Guid.NewGuid();
+
+            var transport = new Neo4jClient.Cypher.CypherQuery("CREATE (t:TransportCompany {guid: '" + guid + "', name: '" + name + "', location: '" + location + "'})", new Dictionary<string, object>(), CypherResultMode.Set);
+            ((IRawGraphClient)client).ExecuteCypher(transport);
+
+            return Ok(transport);
         }
 
         [HttpPut("{id}")]
