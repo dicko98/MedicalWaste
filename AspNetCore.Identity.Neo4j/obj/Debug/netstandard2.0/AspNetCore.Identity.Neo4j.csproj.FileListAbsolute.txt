@@ -1,0 +1,9 @@
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\AspNetCore.Identity.Neo4j\bin\Debug\netstandard2.0\AspNetCore.Identity.Neo4j.deps.json
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\AspNetCore.Identity.Neo4j\bin\Debug\netstandard2.0\AspNetCore.Identity.Neo4j.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\AspNetCore.Identity.Neo4j\bin\Debug\netstandard2.0\AspNetCore.Identity.Neo4j.pdb
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\AspNetCore.Identity.Neo4j\obj\Debug\netstandard2.0\AspNetCore.Identity.Neo4j.AssemblyInfoInputs.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\AspNetCore.Identity.Neo4j\obj\Debug\netstandard2.0\AspNetCore.Identity.Neo4j.AssemblyInfo.cs
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\AspNetCore.Identity.Neo4j\obj\Debug\netstandard2.0\AspNetCore.Identity.Neo4j.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\AspNetCore.Identity.Neo4j\obj\Debug\netstandard2.0\AspNetCore.Identity.Neo4j.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\AspNetCore.Identity.Neo4j\obj\Debug\netstandard2.0\AspNetCore.Identity.Neo4j.pdb
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\AspNetCore.Identity.Neo4j\obj\Debug\netstandard2.0\AspNetCore.Identity.Neo4j.csprojAssemblyReference.cache

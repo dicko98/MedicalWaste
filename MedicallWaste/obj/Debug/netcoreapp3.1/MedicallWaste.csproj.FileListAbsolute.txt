@@ -1,0 +1,87 @@
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.exe
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.deps.json
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.runtimeconfig.json
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.runtimeconfig.dev.json
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.pdb
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.xml
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.DotNet.InternalAbstractions.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.Extensions.PlatformAbstractions.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Namotion.Reflection.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Neo4j.Driver.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NJsonSchema.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.Annotations.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.AspNetCore.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.Core.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.Generation.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.Generation.AspNetCore.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.AssemblyInfoInputs.cache
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.AssemblyInfo.cs
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.csproj.CoreCompileInputs.cache
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\staticwebassets\MedicallWaste.StaticWebAssets.Manifest.cache
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\staticwebassets\MedicallWaste.StaticWebAssets.xml
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\scopedcss\bundle\MedicallWaste.styles.css
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.RazorTargetAssemblyInfo.cache
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.csproj.CopyComplete
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.dll
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.xml
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.pdb
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.genruntimeconfig.cache
+C:\Users\danil\source\repos\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.csprojAssemblyReference.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.exe
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.deps.json
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.runtimeconfig.json
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.runtimeconfig.dev.json
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.pdb
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\MedicallWaste.xml
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.DotNet.InternalAbstractions.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.Extensions.PlatformAbstractions.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Namotion.Reflection.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Neo4j.Driver.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NJsonSchema.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.Annotations.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.AspNetCore.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.Core.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.Generation.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\NSwag.Generation.AspNetCore.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\AspNetCore.Identity.Neo4j.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\AspNetCore.Identity.Neo4j.pdb
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.csprojAssemblyReference.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.AssemblyInfoInputs.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.AssemblyInfo.cs
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\staticwebassets\MedicallWaste.StaticWebAssets.Manifest.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\staticwebassets\MedicallWaste.StaticWebAssets.xml
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\scopedcss\bundle\MedicallWaste.styles.css
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.RazorTargetAssemblyInfo.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.csproj.CopyComplete
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.xml
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.pdb
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\obj\Debug\netcoreapp3.1\MedicallWaste.genruntimeconfig.cache
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Neo4jClient.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Neo4jMapper.dll
+C:\Users\admin\Documents\Faks4\Napredne baze podataka\MedicallWaste\MedicallWaste\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll

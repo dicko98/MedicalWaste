@@ -1,0 +1,189 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\MedicallWaste\\MedicallWaste.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\AspNetCore.Identity.Neo4j\\AspNetCore.Identity.Neo4j.csproj": {
+      "version": "1.0.0-preview2",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\AspNetCore.Identity.Neo4j\\AspNetCore.Identity.Neo4j.csproj",
+        "projectName": "AspNetCore.Identity.Neo4j",
+        "projectPath": "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\AspNetCore.Identity.Neo4j\\AspNetCore.Identity.Neo4j.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\AspNetCore.Identity.Neo4j\\obj\\",
+        "projectStyle": "PackageReference",
+        "crossTargeting": true,
+        "configFilePaths": [
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "Neo4j.Driver": {
+              "target": "Package",
+              "version": "[1.7.1, )"
+            },
+            "Neo4jMapper": {
+              "target": "Package",
+              "version": "[1.0.12, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\MedicallWaste\\MedicallWaste.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\MedicallWaste\\MedicallWaste.csproj",
+        "projectName": "MedicallWaste",
+        "projectPath": "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\MedicallWaste\\MedicallWaste.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\MedicallWaste\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\AspNetCore.Identity.Neo4j\\AspNetCore.Identity.Neo4j.csproj": {
+                "projectPath": "C:\\Users\\admin\\Documents\\Faks4\\Napredne baze podataka\\MedicallWaste\\AspNetCore.Identity.Neo4j\\AspNetCore.Identity.Neo4j.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.AspNetCore.StaticFiles": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Bcl.AsyncInterfaces": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.ApiDescription.Client": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "NSwag.ApiDescription.Client": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[13.0.5, )"
+            },
+            "NSwag.AspNetCore": {
+              "target": "Package",
+              "version": "[13.9.4, )"
+            },
+            "Neo4j.Driver": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
+            "Neo4jClient": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Neo4jMapper": {
+              "target": "Package",
+              "version": "[1.0.12, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.6.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
