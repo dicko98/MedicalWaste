@@ -1,11 +1,13 @@
-<h1>CoDi team</h1>
+<h3>Dobrodošli, {{currentUser.firstname}}  {{currentUser.lastname}}. Vaša medicinska ustanova je {{currentUser.orgname}} {{currentUser.orglocation}}.</h3>
+<p>&nbsp;</p>
 
-<p>Ova aplikacija je SPA Angular i .Net Core aplikacija, koja za bazu podataka koristi Cassandru. Takođe, korišćen je i Arduino ESP8266 WiFi board, kao i raspoloživi senzori kako bi 
-    se demonstrirao rad IoT aplikacije i vremenskih serije podataka, na osnovu kojih bi moglo da se vrši predviđanje zagađenja voda razvijanjem ovog projekta.
-</p>
-<p>
-    U Angular aplikaciji su prikazane GET metode, kako bez parametara tako i sa parametrima, kao i DELETE metode, gde se može brisati pojedinačni podatak kao i svi podaci sa jednog senzora.
-    CREATE-a postoji za podatke koji se kreiraju i smestaju u tablu alertPollution na osnovu nekog postojećeg podatka iz tabele pollution, a CREATE samog podatka se odvija ISKLJUČIVO upisom podataka sa senzora kako bi tip aplikacije zadržao smisao.
-    UPDATE postoji za izmenu alarmatnog podatka, tako što mu menja "status" i on se pri sledećem GETu ne prikazuje u alarmatne podatke.
-</p>
-<h2>Aplikaciju razvijali Milan Stojanović (16922) i Danilo Marković (16687)</h2>
+<p> U formi ispod unosite vrednost tezine paketa za koji ce biti kreirani podaci.</p>
+<mat-form-field appearance="fill" style="display: inline-flexbox; width: 500px;">
+    <mat-label>Izmerena tezina</mat-label>
+    <input [(ngModel)]="weight" matInput placeholder="Npr. 12" >
+</mat-form-field>
+<mat-form-field appearance="fill" style="display:block; width: 500px;">
+    <mat-label>Barcode preuzetog paketa</mat-label>
+    <input [(ngModel)]="barcode" matInput placeholder="Npr. 3fa85f64-5717-4562-b3fc-2c963f66afa6" >
+</mat-form-field>
+<button mat-flat-button color="warn" (click)="store()" style="display: block; width: 220px;">Skladisti</button>
