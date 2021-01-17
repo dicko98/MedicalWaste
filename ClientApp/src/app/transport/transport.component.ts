@@ -20,21 +20,27 @@ export class TransportComponent implements AfterViewInit{
 
   constructor(http: HttpClient) {
 
-    http.get<ApplicationUser>('https://192.168.2.148:45455/' + 'user/gettransportationuser?username=' + localStorage.getItem("username")).subscribe(result => {
+    
+     http.get<ApplicationUser>('https://192.168.2.148:45455/' + 'user/gettransportuser?username=' + localStorage.getItem("username")).subscribe(result => {
       console.log(result);  
     this.currentUser = result;
-    //this.ngAfterViewInit();    
-    }, error => console.error(error));
-   this.httpClient = http;
-
-    http.get<LandfillOrganization[]>('https://192.168.2.148:45455/' + 'landfillorganization/getlandfilorganization?location=' + this.currentUser.orglocation).subscribe(result => {
+    http.get<LandfillOrganization[]>('https://192.168.2.148:45455/' + 'landfillorganization/getlandfillorganization?location=' + this.currentUser.orglocation).subscribe(result => {
       console.log(result);  
     this.landfills = result;
     this.dataSource = new MatTableDataSource<LandfillOrganization>(result);
     this.ngAfterViewInit();
     }, error => console.error(error));
+     }, error => console.error(error));
+    this.httpClient = http;
+    
+ 
+
+
+    
 
  }
+
+
 
   // deleteData(pollution, event){
   //   const options = {
@@ -49,6 +55,7 @@ export class TransportComponent implements AfterViewInit{
   //     location.reload();
   //   });
   // }
+  a
 
   public pickUp() {
     const options = {
@@ -57,7 +64,7 @@ export class TransportComponent implements AfterViewInit{
     })
     };
 
-    this.httpClient.put('https://192.168.2.148:45455/' + 'user/pickuppackage?barcode='+this.barcode+'&weight='+this.weight+'&username='+ localStorage.getItem("username") + '', options)
+    this.httpClient.put('https://192.168.2.148:45455/' + 'user/pickuppackage?barcode='+this.barcode+'&weight='+this.weight+'&username='+ this.currentUser.username + '', options)
      .subscribe((s) => {
       console.log(s);
       alert("Uspesno ste registrovali pokupljanje medicinskog otpad - paket!");
