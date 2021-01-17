@@ -36,6 +36,58 @@ namespace MedicallWaste.Controllers
             return Ok(packages);
         }
 
+        [HttpGet(nameof(GetMedicalTrack))]
+        public async Task<IActionResult> GetMedicalTrack(string username)
+        {
+            var query = client.Cypher
+                .Match("(user:ApplicationUser)-[w:WORKS_AT]->(med:MedicalOrganization) WHERE user.username='" + username + "'")
+                .Return(() => new
+                {
+                    User = Return.As<ApplicationUser>("user"),
+                    MedOrg = Return.As<MedicalOrganization>("med")
+                });
+            var res = query.Results.FirstOrDefault();
+
+            var query2 = client.Cypher
+                .Match("(us:ApplicationUser)-[wer:WORKS_AT]->(landorg:LandfillOrganization), (user:ApplicationUser)-[r:MADE|PICKED_UP|STORED]->(p:Package), (u:ApplicationUser)-[w:WORKS_AT]->(m:MedicalOrganization), (ua:ApplicationUser)-[wo:WORKS_AT]->(t:TransportCompany)  where m.guid='" + res.MedOrg.guid + "'")
+                .Return(() => new
+                {
+                    LandFillUser = Return.As<ApplicationUser>("us"),
+                    LandFill = Return.As<LandfillOrganization>("landorg"),
+                    User = Return.As<ApplicationUser>("user"),
+                    Package = Return.As<Package>("p"),
+                    MedicalOrg = Return.As<MedicalOrganization>("m"),
+                    TransportUser = Return.As<ApplicationUser>("ua"),
+                    TransportCompany = Return.As<TransportCompany>("t")
+                });
+            var result = query2.Results.GroupBy(x => x.Package.barcode).Select(g => g.First()).ToList();
+
+            IList<Package> packages = new List<Package>();
+
+            foreach (var p in result)
+            {
+                Package package = new Package
+                {
+                    barcode = p.Package.barcode,
+                    name = p.Package.name,
+                    weight = p.Package.weight,
+                    pickedweight = p.Package.pickedweight,
+                    storedweight = p.Package.storedweight,
+                    datecreated = p.Package.datecreated,
+                    medorganization = res.MedOrg,
+                    landfillorganization = p.LandFill,
+                    transportcompany = p.TransportCompany,
+                    medicaluser = res.User,
+                    transportuser = p.TransportUser,
+                    deponyuser = p.LandFillUser
+                };
+                packages.Add(package);
+            }
+            
+            return Ok(packages);
+        }
+
+
         [HttpGet(nameof(GetAllPackages))]
         public async Task<IActionResult> GetAllPackages()
         {
@@ -84,7 +136,6 @@ namespace MedicallWaste.Controllers
             }
         }
 
-
         [HttpPatch(nameof(ChangeWeight))]
         public void ChangeWeight(Package package)
         {
@@ -92,19 +143,12 @@ namespace MedicallWaste.Controllers
             session.RunAsync("MATCH (package:Package) WHERE package.name = '"+package.name+"' SET package.weight = "+package.weight+" ");
         }
 
-
-        [HttpDelete(nameof(DeletePackage))]
-        public void DeletePackage(Package package)
-        {
-            var session = driver.AsyncSession();
-            session.RunAsync("MATCH (package:Package) WHERE package.barcode = '" + package.barcode + "' DELETE package");
-        }
-
         [HttpDelete(nameof(DeleteConnectedPackage))]
         public void DeleteConnectedPackage(Package package)
         {
             var session = driver.AsyncSession();
-            session.RunAsync("OPTIONAL MATCH (package:Package)-[r]->() WHERE package.barcode = '" + package.barcode + "' DELETE r, package");
+            session.RunAsync("OPTIONAL MATCH ()-[r]->(package:Package) WHERE package.barcode = '" + package.barcode + "' DELETE r, package");
+            session.RunAsync("MATCH (package:Package) WHERE package.barcode = '" + package.barcode + "' DELETE package");
         }
     }
 }
