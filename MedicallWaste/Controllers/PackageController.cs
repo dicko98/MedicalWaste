@@ -27,10 +27,10 @@ namespace MedicallWaste.Controllers
             client = graphClient;
         }
         [HttpGet(nameof(GetPackage))]
-        public async Task<IActionResult> GetPackage(string name)
+        public async Task<IActionResult> GetPackage(Guid barcode)
         {
 
-            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package) where package.name = '" + name + "' RETURN package", new Dictionary<string, object>(), CypherResultMode.Set);
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package) where package.barcode = '" + barcode + "' RETURN package", new Dictionary<string, object>(), CypherResultMode.Set);
             IList<Package> packages = ((IRawGraphClient)client).ExecuteGetCypherResults<Package>(query).ToList();
 
             return Ok(packages);
