@@ -61,7 +61,7 @@ namespace MedicallWaste.Controllers
                     var result = new Neo4jClient.Cypher.CypherQuery("CREATE (package:Package {barcode: '" + barcode + "', name: '" + name + "', weight: '" + weight + "', datecreated: '" + createDate + "'}), (user:ApplicationUser {username: '" + username + "'})", new Dictionary<string, object>(), CypherResultMode.Set);
                     ((IRawGraphClient)client).ExecuteCypher(result);
 
-                    var relation = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package), (user:ApplicationUser) WHERE package.barcode = '" + barcode + "' AND user.username = '" + username + "' CREATE (user) -[r:MADE]-> (package) RETURN TYPE(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+                    var relation = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package), (user:ApplicationUser) WHERE package.barcode = '" + barcode + "' AND user.username = '" + username + "' CREATE (user) -[r:MADE {date: package.datecreated}]-> (package) RETURN TYPE(r), r.date", new Dictionary<string, object>(), CypherResultMode.Set);
                     ((IRawGraphClient)client).ExecuteCypher(relation);
                     return Ok(result);
                 }
@@ -70,7 +70,7 @@ namespace MedicallWaste.Controllers
                     var result = new Neo4jClient.Cypher.CypherQuery("CREATE(package:Package {barcode: '" + barcode + "', name: '" + name + "', weight: '" + weight + "', datecreated: '" + createDate + "'})", new Dictionary<string, object>(), CypherResultMode.Set);
                     ((IRawGraphClient)client).ExecuteCypher(result);
 
-                    var relation = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package), (user:ApplicationUser) WHERE package.barcode = '" + barcode + "' AND user.username = '" + username + "' CREATE (user) -[r:MADE]-> (package) RETURN TYPE(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+                    var relation = new Neo4jClient.Cypher.CypherQuery("MATCH (package:Package), (user:ApplicationUser) WHERE package.barcode = '" + barcode + "' AND user.username = '" + username + "' CREATE (user) -[r:MADE {date: package.datecreated}]-> (package) RETURN TYPE(r), r.date", new Dictionary<string, object>(), CypherResultMode.Set);
                     ((IRawGraphClient)client).ExecuteCypher(relation);
 
                     return Ok(result);
@@ -105,15 +105,6 @@ namespace MedicallWaste.Controllers
         {
             var session = driver.AsyncSession();
             session.RunAsync("OPTIONAL MATCH (package:Package)-[r]->() WHERE package.barcode = '" + package.barcode + "' DELETE r, package");
-        }
-
-        [HttpPost(nameof(PickUpPackage))]
-        public async Task<IActionResult> PickUpPackage(Guid transportGuid, Guid barcode)
-        {
-            var pickup = new Neo4jClient.Cypher.CypherQuery("MATCH(t: TransportCompany),(p: Package) WHERE t.guid = '" + transportGuid + "' AND p.barcode = '" + barcode + "' CREATE (p)-[r: PICKEDUP_BY]->(t) RETURN type(r)", new Dictionary<string, object>(), CypherResultMode.Set);
-            ((IRawGraphClient)client).ExecuteCypher(pickup);
-
-            return Ok(pickup);
         }
     }
 }

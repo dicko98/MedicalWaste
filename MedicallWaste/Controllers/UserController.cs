@@ -28,9 +28,12 @@ namespace MedicallWaste.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get(string username)
         {
-            return new string[] { "value1", "value2" };
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (user:ApplicationUser) where user.username = '" + username + "' RETURN user", new Dictionary<string, object>(), CypherResultMode.Set);
+            ApplicationUser user = ((IRawGraphClient)client).ExecuteGetCypherResults<ApplicationUser>(query).FirstOrDefault();
+
+            return Ok(user);
         }
 
         [HttpGet(nameof(GetAllUsers))]
@@ -117,10 +120,22 @@ namespace MedicallWaste.Controllers
         }
 
         [HttpPost(nameof(WorksAtMedical))]
-        public void WorksAtMedical(string username, Guid organization)
+        public void WorksAtMedical(string username, Guid organizationGuid)
         {
             var session = driver.AsyncSession();
-            session.RunAsync("MATCH (o:MedicalOrganization),(u:ApplicationUser) WHERE o.guid = '" + organization + "' AND u.username = '" + username + "' CREATE(u) -[r: WORKS_AT]->(o) RETURN type(r)");
+            session.RunAsync("MATCH (o:MedicalOrganization),(u:ApplicationUser) WHERE o.guid = '" + organizationGuid + "' AND u.username = '" + username + "' CREATE(u) -[r: WORKS_AT]->(o) RETURN type(r)");
+        }
+
+        [HttpPost(nameof(PickUpPackage))]
+        public async Task<IActionResult> PickUpPackage(string username, Guid barcode)
+        {
+            var user = new Neo4jClient.Cypher.CypherQuery("MATCH (user:ApplicationUser) WHERE user.username = '" + username + "' RETURN user", new Dictionary<string, object>(), CypherResultMode.Set);
+            IList<ApplicationUser> applicationUsers = ((IRawGraphClient)client).ExecuteGetCypherResults<ApplicationUser>(user).ToList();
+
+            var pickup = new Neo4jClient.Cypher.CypherQuery("MATCH (u:ApplicationUser), (p:Package) WHERE u.username = '" + username + "' AND p.barcode = '" + barcode + "' CREATE (u)-[r: PICKED_UP]->(p) RETURN type(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+            ((IRawGraphClient)client).ExecuteCypher(pickup);
+
+            return Ok(pickup);
         }
 
         [HttpDelete("{id}")]
