@@ -1,32 +1,32 @@
-<h1 id="tableLabel">Tabela vrednosti</h1>
+<h3>Dobrodošli, {{currentUser.firstname}}  {{currentUser.lastname}}. Vaša kompanije za transport je {{currentUser.orgname}} {{currentUser.orglocation}}.</h3>
+<p>&nbsp;</p>
 
-<p>Povlacenje svih elemenata iz baze</p>
+<p> U formi ispod unosite vrednost tezine paketa za koji ce biti kreirani podaci.</p>
+<mat-form-field appearance="fill" style="display: inline-flexbox; width: 500px;">
+    <mat-label>Izmerena tezina</mat-label>
+    <input [(ngModel)]="weight" matInput placeholder="Npr. 12" >
+</mat-form-field>
+<mat-form-field appearance="fill" style="display:block; width: 500px;">
+    <mat-label>Barcode preuzetog paketa</mat-label>
+    <input [(ngModel)]="barcode" matInput placeholder="Npr. 3fa85f64-5717-4562-b3fc-2c963f66afa6" >
+</mat-form-field>
+<button mat-flat-button color="warn" (click)="pickUp()" style="display: block; width: 220px;">Pokupi</button>
 
+
+<p>&nbsp;</p>
+<p>U tabeli ispod mozete videti deponije bazirane na vasoj lokaciji</p>
 
 <div class="mat-elevation-z8" >
   <table style="width: 100%;" mat-table [dataSource]="dataSource">
 
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> Id senzora </th>
-      <td mat-cell *matCellDef="let pollution"> {{pollution.sensorId}} </td>
+    <ng-container matColumnDef="deponija">
+      <th mat-header-cell *matHeaderCellDef> Deponija </th>
+      <td mat-cell *matCellDef="let landfill"> {{landfill.name}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="data">
-      <th mat-header-cell *matHeaderCellDef> Vrednost </th>
-      <td mat-cell *matCellDef="let pollution"> {{ pollution.sensorData }} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="time">
-      <th mat-header-cell *matHeaderCellDef> Vreme </th>
-      <td mat-cell *matCellDef="let pollution"> {{ pollution.collectTime }} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="deletion">
-      <th mat-header-cell *matHeaderCellDef> Brisanje </th>
-      <td mat-cell *matCellDef="let pollution"> <button
-        mat-button
-        color="warn"
-        (click)="deleteData(pollution, $event)"> Obrisi </button></td>
+    <ng-container matColumnDef="lokacija">
+      <th mat-header-cell *matHeaderCellDef> Lokacija </th>
+      <td mat-cell *matCellDef="let landfill"> {{ landfill.location }} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -36,15 +36,3 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
 
-<p>&nbsp;</p>
-<h3>Brisanje svih podataka za određeni senzor:</h3>
-
-<mat-form-field appearance="fill">
-  <mat-label>Sensor</mat-label>
-  <mat-select (selectionChange)="selected($event)" name="sensor">
-    <mat-option *ngFor="let s of sensors" [value]="s">
-      {{s}}
-    </mat-option>
- </mat-select>
-</mat-form-field>
-<button mat-raised-button color="primary" (click)="deleteSensorData()">Obrisi</button>

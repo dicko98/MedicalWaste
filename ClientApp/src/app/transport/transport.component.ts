@@ -7,62 +7,81 @@ import { MatPaginator, MatTableDataSource, ShowOnDirtyErrorStateMatcher } from '
   templateUrl: './transport.component.html'
 })
 export class TransportComponent implements AfterViewInit{
-  public pollutions: Object[] = [];
-  dataSource = new MatTableDataSource<Object>(this.pollutions);
-  displayedColumns:  string[] = ['id', 'data', 'time', 'deletion'];
+  public landfills: LandfillOrganization[] = [];
+  dataSource = new MatTableDataSource<LandfillOrganization>(this.landfills);
+  displayedColumns:  string[] = ['deponija', 'lokacija'];
   httpClient: HttpClient;
-  baseUrl: string;
-  public sensors: string[];
-  selectedValue: string;
+  currentUser: ApplicationUser = new ApplicationUser();
+  weight: string;
+  barcode: string;
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   
 
   constructor(http: HttpClient) {
-    http.get<Object>('https://192.168.2.148:45455/' + 'Package/GetAllPackages').subscribe(result => {
+
+    http.get<ApplicationUser>('https://192.168.2.148:45455/' + 'user/gettransportationuser?username=' + localStorage.getItem("username")).subscribe(result => {
       console.log(result);  
-    this.dataSource = new MatTableDataSource<Object>();
-      this.ngAfterViewInit();
-      
+    this.currentUser = result;
+    //this.ngAfterViewInit();    
     }, error => console.error(error));
-    this.httpClient = http;
-    
-  }
+   this.httpClient = http;
 
-  selected(event) {
-    this.selectedValue = event.value;
-  }
-  
+    http.get<LandfillOrganization[]>('https://192.168.2.148:45455/' + 'landfillorganization/getlandfilorganization?location=' + this.currentUser.orglocation).subscribe(result => {
+      console.log(result);  
+    this.landfills = result;
+    this.dataSource = new MatTableDataSource<LandfillOrganization>(result);
+    this.ngAfterViewInit();
+    }, error => console.error(error));
 
-  deleteData(pollution, event){
+ }
+
+  // deleteData(pollution, event){
+  //   const options = {
+  //     headers: new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //   }), body: pollution
+  //   };
+
+  //  this.httpClient.delete(this.baseUrl + 'pollution/deletebykey', options)
+  //    .subscribe((s) => {
+  //     console.log(s);
+  //     location.reload();
+  //   });
+  // }
+
+  public pickUp() {
     const options = {
       headers: new HttpHeaders({
       'Content-Type': 'application/json',
-    }), body: pollution
+    })
     };
 
-   this.httpClient.delete(this.baseUrl + 'pollution/deletebykey', options)
+    this.httpClient.put('https://192.168.2.148:45455/' + 'user/pickuppackage?barcode='+this.barcode+'&weight='+this.weight+'&username='+ localStorage.getItem("username") + '', options)
      .subscribe((s) => {
       console.log(s);
+      alert("Uspesno ste registrovali pokupljanje medicinskog otpad - paket!");
       location.reload();
-    });
+    }, error => alert(error));
+    
   }
 
-  deleteSensorData(){
-    this.httpClient.delete(this.baseUrl + 'pollution/' + this.selectedValue)
-    .subscribe((s) => {
-     console.log(s);
-     location.reload();
-   });
-  }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
 }
 
-interface Pollution {
-  sensorId: string;
-  sensorData: number;
-  collectTime: Date;
+class ApplicationUser {
+  firstname: string;
+  lastname:string;
+  username: string;
+  orgname: string;
+  orglocation: string;
+}
+
+class LandfillOrganization{
+  guid: string;
+  name: string;
+  location: string;
 }
