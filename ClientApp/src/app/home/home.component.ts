@@ -187,7 +187,7 @@ export class HomeComponent implements AfterViewInit {
   deleteMedOrg(med: MedicalOrganization)
   {
     
-   this.httpClient.delete('https://192.168.2.148:45455/' + 'medicalorganization/deletemedicalorganization?organizationGuid='+med.guid)
+   this.httpClient.delete('https://192.168.2.148:45455/' + 'medicalorganization/deleteconnectedmedicalorganization?organizationGuid='+med.guid)
      .subscribe((s) => {
       console.log(s);
       alert("Uspesno ste obrisali medicinsku ustanovu");
@@ -196,16 +196,16 @@ export class HomeComponent implements AfterViewInit {
   }
   deleteTransOrg(trans: TransportOrganization)
   {
-    this.httpClient.delete('https://192.168.2.148:45455/' + 'medicalorganization/deletemedicalorganization?organizationGuid='+trans.guid)
+    this.httpClient.delete('https://192.168.2.148:45455/' + 'transportcompany/deleteconnectedtransportcompanies?transportGuid='+trans.guid)
      .subscribe((s) => {
       console.log(s);
-      alert("Uspesno ste obrisali medicinsku ustanovu");
+      alert("Uspesno ste obrisali transport kompaniju");
       location.reload();
     }, error => alert(error));
   }
   deleteLandfillOrg(land: LandfillOrganization)
   {
-    this.httpClient.delete('https://192.168.2.148:45455/' + 'medicalorganization/deletemedicalorganization?organizationGuid='+land.guid)
+    this.httpClient.delete('https://192.168.2.148:45455/' + 'landfillorganization/deleteconnectedlandfillorganization?organizationGuid='+land.guid)
      .subscribe((s) => {
       console.log(s);
       alert("Uspesno ste obrisali medicinsku ustanovu");
