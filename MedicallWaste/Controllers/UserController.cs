@@ -39,7 +39,7 @@ namespace MedicallWaste.Controllers
         [HttpGet(nameof(GetAllUsers))]
         public async Task<IActionResult> GetAllUsers()
         {
-            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (users:ApplicationUser) RETURN users", new Dictionary<string, object>(), CypherResultMode.Set);
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (users:ApplicationUser) WHERE NOT (users)-[: WORKS_AT]-() RETURN users", new Dictionary<string, object>(), CypherResultMode.Set);
             IList<ApplicationUser> users = ((IRawGraphClient)client).ExecuteGetCypherResults<ApplicationUser>(query).ToList();
 
             return Ok(users);
