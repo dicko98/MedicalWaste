@@ -208,7 +208,7 @@ export class HomeComponent implements AfterViewInit {
     this.httpClient.delete('https://192.168.2.148:45455/' + 'landfillorganization/deleteconnectedlandfillorganization?organizationGuid='+land.guid)
      .subscribe((s) => {
       console.log(s);
-      alert("Uspesno ste obrisali medicinsku ustanovu");
+      alert("Uspesno ste obrisali deponiju");
       location.reload();
     }, error => alert(error));
   }
