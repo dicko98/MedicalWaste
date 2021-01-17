@@ -15,9 +15,9 @@ import { MatPaginator, MatTableDataSource, ShowOnDirtyErrorStateMatcher } from '
 )
 
 export class MedicalComponent implements AfterViewInit {
-  public users: Object[] = [];
-  dataSource = new MatTableDataSource<Object>(this.users);
-  displayedColumns:  string[] = [];
+  public packages: Package[] = [];
+  dataSource = new MatTableDataSource<Package>(this.packages);
+  displayedColumns:  string[] = ['paket','tezina','vreme','pokupljenaTezina','skladistenaTezina','transport','deponija'];
   httpClient: HttpClient;
   currentUser: ApplicationUser = new ApplicationUser();
   weight: string;
@@ -35,9 +35,18 @@ export class MedicalComponent implements AfterViewInit {
      }, error => console.error(error));
     this.httpClient = http;
     this.ngAfterViewInit();
+    
+    http.get<Package[]>('https://192.168.2.148:45455/' + 'package/getmedicaltrack?username=' + localStorage.getItem("username")).subscribe(result => {
+      console.log(result);  
+    this.packages = result;
+    this.dataSource = new MatTableDataSource<Package>(result);
+    this.ngAfterViewInit();
+    }, error => console.error(error));
+
   }
 
   ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
   }
 
 
@@ -65,4 +74,27 @@ class ApplicationUser {
   username: string;
   orgname: string;
   orglocation: string;
+}
+
+class Package{
+  name: string;
+  weight: number;
+  pickedweight: number;
+  storedweight: number;
+  datecreated: Date;
+  landfillorganization: LandfillOrganization;
+  transportcompany: TransportCompany;
+
+}
+
+class LandfillOrganization{
+  guid: string;
+  name: string;
+  location: string;
+}
+
+class TransportCompany{
+  guid: string;
+  name: string;
+  location: string;
 }
