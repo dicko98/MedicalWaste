@@ -29,7 +29,6 @@ namespace MedicallWaste.Controllers
         [HttpGet(nameof(GetAllLandfillOrganizations))]
         public async Task<IActionResult> GetAllLandfillOrganizations()
         {
-
             var query = new Neo4jClient.Cypher.CypherQuery("MATCH(l: LandfillOrganization) RETURN l", new Dictionary<string, object>(), CypherResultMode.Set);
             IList<LandfillOrganization> organizations = ((IRawGraphClient)client).ExecuteGetCypherResults<LandfillOrganization>(query).ToList();
 
@@ -39,8 +38,12 @@ namespace MedicallWaste.Controllers
         [HttpGet(nameof(GetLandfillOrganization))]
         public async Task<IActionResult> GetLandfillOrganization(string location)
         {
+            //string fullLocation = ".*" + location + ".*";
 
-            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (l:LandfillOrganization) where l.location = '" + location + "' RETURN l", new Dictionary<string, object>(), CypherResultMode.Set);
+            //Dictionary<string, object> queryDict = new Dictionary<string, object>();
+            //queryDict.Add("fullLocation", fullLocation);
+
+            var query = new Neo4jClient.Cypher.CypherQuery("MATCH (l:LandfillOrganization) WHERE l.location =~ '.*" + location + ".*' RETURN l", new Dictionary<string, object>(), CypherResultMode.Set);
             IList<LandfillOrganization> organizations = ((IRawGraphClient)client).ExecuteGetCypherResults<LandfillOrganization>(query).ToList();
 
             return Ok(organizations);

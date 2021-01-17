@@ -57,15 +57,6 @@ namespace MedicallWaste.Controllers
             return Ok(transport);
         }
 
-        [HttpPost(nameof(StorePackage))]
-        public async Task<IActionResult> StorePackage(Guid transportGuid, Guid landfillGuid)
-        {
-            var store = new Neo4jClient.Cypher.CypherQuery("MATCH(t: TransportCompany),(l: LandfillOrganization) WHERE t.guid = '" + transportGuid + "' AND l.guid = '" + landfillGuid + "' CREATE (t)-[r: STORED_TO]->(l) RETURN type(r)", new Dictionary<string, object>(), CypherResultMode.Set);
-            ((IRawGraphClient)client).ExecuteCypher(store);
-
-            return Ok(store);
-        }
-
         [HttpDelete(nameof(DeleteTransportCompany))]
         public void DeleteTransportCompany(TransportCompany transport)
         {

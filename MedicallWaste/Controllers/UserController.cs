@@ -126,24 +126,22 @@ namespace MedicallWaste.Controllers
             session.RunAsync("MATCH (o:MedicalOrganization),(u:ApplicationUser) WHERE o.guid = '" + organizationGuid + "' AND u.username = '" + username + "' CREATE(u) -[r: WORKS_AT]->(o) RETURN type(r)");
         }
 
-        [HttpPost(nameof(PickUpPackage))]
-        public async Task<IActionResult> PickUpPackage(string username, Guid barcode)
+        [HttpPut(nameof(PickUpPackage))]
+        public async Task<IActionResult> PickUpPackage(string username, Guid barcode, int weight)
         {
-            var user = new Neo4jClient.Cypher.CypherQuery("MATCH (user:ApplicationUser) WHERE user.username = '" + username + "' RETURN user", new Dictionary<string, object>(), CypherResultMode.Set);
-            IList<ApplicationUser> applicationUsers = ((IRawGraphClient)client).ExecuteGetCypherResults<ApplicationUser>(user).ToList();
-
-            var pickup = new Neo4jClient.Cypher.CypherQuery("MATCH (u:ApplicationUser), (p:Package) WHERE u.username = '" + username + "' AND p.barcode = '" + barcode + "' CREATE (u)-[r: PICKED_UP]->(p) RETURN type(r)", new Dictionary<string, object>(), CypherResultMode.Set);
+            var pickup = new Neo4jClient.Cypher.CypherQuery("MATCH (u:ApplicationUser), (p:Package) WHERE u.username = '" + username + "' AND p.barcode = '" + barcode + "' SET p.pickedweight = '" + weight + "' CREATE (u)-[r: PICKED_UP]->(p) RETURN type(r) ", new Dictionary<string, object>(), CypherResultMode.Set);
             ((IRawGraphClient)client).ExecuteCypher(pickup);
 
             return Ok(pickup);
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPut(nameof(StorePackage))]
+        public async Task<IActionResult> StorePackage(string username, Guid barcode, int weight)
         {
+            var store = new Neo4jClient.Cypher.CypherQuery("MATCH (u:ApplicationUser), (p:Package) WHERE u.username = '" + username + "' AND p.barcode = '" + barcode + "' SET p.storedweight = '" + weight + "' CREATE (u)-[r: STORED]->(p) RETURN type(r) ", new Dictionary<string, object>(), CypherResultMode.Set);
+            ((IRawGraphClient)client).ExecuteCypher(store);
+
+            return Ok(store);
         }
-
-      
-
     }
 }
