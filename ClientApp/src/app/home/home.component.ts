@@ -1,4 +1,4 @@
-import { AfterViewInit, Component,Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component,Inject, ViewChild, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
 import {MaterialModule} from ".././material/material.module";
 import { NgModule } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -18,94 +18,224 @@ import { ActivatedRoute } from '@angular/router';
   }
 )
 export class HomeComponent implements AfterViewInit {
-  public sensors: string[];
-  selectedValue: string;
-  dateFrom: Date;
-  dateTo: Date;
-  pollutions: Pollution[] = [];
-  alertPollutions: AlertPollution[] = [];
+ 
+  medorgs: MedicalOrganization[] = [];
+  transportorgs: TransportOrganization[] = []; 
+  landfillorgs: LandfillOrganization[] = [];
+  users: ApplicationUser[] = [];
   httpClient: HttpClient;
   baseUrl: string;
-  dataSource = new MatTableDataSource<Pollution>(this.pollutions);
-  dataSource2 = new MatTableDataSource<Pollution>(this.alertPollutions);
-  displayedColumns:  string[] = ['id', 'data', 'time', 'alr'];
-  displayedColumns2:  string[] = ['id', 'data', 'time', 'about', 'alr'];
+  dataSource = new MatTableDataSource<MedicalOrganization>(this.medorgs);
+  dataSource2 = new MatTableDataSource<TransportOrganization>(this.transportorgs);
+  dataSource3 = new MatTableDataSource<LandfillOrganization>(this.landfillorgs);
+  displayedColumns:  string[] = ['med', 'loc', 'del'];
+  displayedColumns2: string[] = ['transportorg', 'location', 'del'];
+  displayedColumns3:  string[] = ['landfillorg', 'location', 'del'];
   username: string;
+  selectedMed: string;
+  selectedMedUser: string;
+  selectedTrans: string;
+  selectedTransUser: string;
+  selectedLandfill: string;
+  selectedLandfillUser:string;
+  nameMed: string;
+  locMed: string;
+  nameTrans: string;
+  locTrans: string;
+  nameLandfill:string;
+  locLandfill:string;
+  
+  @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  //@ViewChild(MatPaginator, {static: false}) paginator2: MatPaginator;
 
-  constructor(private route: ActivatedRoute, http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    // http.get<string[]>(baseUrl + 'pollution/getsensors').subscribe(result => {
-    //   this.sensors = result;
-    // }, error => console.error(error));
-    // this.httpClient = http;
-    // this.baseUrl = baseUrl;
-    // http.get<AlertPollution[]>(baseUrl + 'alertpollution').subscribe(result => {
-    //   this.dataSource2 = new MatTableDataSource<AlertPollution>(result);
-    // }, error => console.error(error));
+  constructor(private route: ActivatedRoute, http: HttpClient) {
+    
     this.route.queryParams.subscribe(params => {
       this.username = params['username'];
   });
-   //if(localStorage.getItem("username")==='undefined')
       localStorage.setItem("username", this.username);
+
+      this.httpClient = http;
+      http.get<MedicalOrganization[]>('https://192.168.2.148:45455/' + 'medicalorganization/getallmedicalorganizations').subscribe(result => {
+      this.medorgs = result;
+      console.log(result);  
+      this.dataSource = new MatTableDataSource<MedicalOrganization>(result);
+      this.ngAfterViewInit();
+       }, error => console.error(error));
+    
+      http.get<TransportOrganization[]>('https://192.168.2.148:45455/' + 'transportcompany/getalltransportcompanies').subscribe(result => {
+      this.transportorgs = result;
+      console.log(result);  
+      this.dataSource2 = new MatTableDataSource<TransportOrganization>(result);
+      this.ngAfterViewInit();
+      }, error => console.error(error));
+  
+      http.get<LandfillOrganization[]>('https://192.168.2.148:45455/' + 'landfillorganization/getalllandfillorganizations').subscribe(result => {
+        this.landfillorgs = result;
+        console.log(result);  
+        this.dataSource3 = new MatTableDataSource<LandfillOrganization>(result);
+        this.ngAfterViewInit();
+      }, error => console.error(error));
+
+      http.get<ApplicationUser[]>('https://192.168.2.148:45455/' + 'user/getallusers').subscribe(result => {
+        this.users = result;
+        console.log(result);  
+        this.ngAfterViewInit();
+      }, error => console.error(error));
+
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    //this.dataSource2.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator.toArray()[0];
+    this.dataSource2.paginator = this.paginator.toArray()[1];
+    this.dataSource3.paginator = this.paginator.toArray()[2];
   }
 
-  selected(event) {
-    this.selectedValue = event.value;
-  }
-  public showData() {
-    this.httpClient.get<Pollution[]>(this.baseUrl + 'pollution/getbyparams?sensorid='+this.selectedValue+'&from='+this.dateFrom.toDateString()+'&to='+this.dateTo.toDateString()).subscribe(result => {
-      this.dataSource = new MatTableDataSource<Pollution>(result);
-      this.ngAfterViewInit();
-    }, error => console.error(error));
-    
-  }
-
-  public createAlertPollution(pollution, event){
+  connectMedUser(){
     const options = {
       headers: new HttpHeaders({
       'Content-Type': 'application/json',
     })
     };
     
-   this.httpClient.post(this.baseUrl + 'alertpollution', JSON.stringify(pollution), options)
+   this.httpClient.post('https://192.168.2.148:45455/' + 'user/worksatmedical?username='+this.selectedMedUser+'&organizationGuid='+this.selectedMed +'', options)
      .subscribe((s) => {
       console.log(s);
+      alert("Uspesno ste spojili zaposlenog za medicinsku organizaciju");
       location.reload();
-    });
+    }, error => alert(error));
   }
 
-  public updateAlertPollution(alertPollution, event){
+
+  connectTransUser(){
     const options = {
       headers: new HttpHeaders({
       'Content-Type': 'application/json',
     })
     };
     
-   this.httpClient.put(this.baseUrl + 'alertpollution', JSON.stringify(alertPollution), options)
+   this.httpClient.post('https://192.168.2.148:45455/' + 'user/worksattransport?username='+this.selectedTransUser+'&transportGuid='+this.selectedTrans +'', options)
      .subscribe((s) => {
       console.log(s);
+      alert("Uspesno ste spojili zaposlenog sa transportnom kompanijom");
       location.reload();
-    });
+    }, error => alert(error));
   }
+
+
+  connectLandfillUser()
+  {
+    const options = {
+      headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+    };
+    
+   this.httpClient.post('https://192.168.2.148:45455/' + 'user/worksatlandfill?username='+this.selectedLandfillUser+'&landfillGuid='+this.selectedLandfill +'', options)
+     .subscribe((s) => {
+      console.log(s);
+      alert("Uspesno ste spojili zaposlenog sa deponijom");
+      location.reload();
+    }, error => alert(error));
+  }
+  public createMedOrg()
+  {
+    const options = {
+      headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+    };
+    
+   this.httpClient.post('https://192.168.2.148:45455/' + 'medicalorganization/createmedicalorganization?name='+this.nameMed+'&location='+this.locMed +'', options)
+     .subscribe((s) => {
+      console.log(s);
+      alert("Uspesno ste kreirali medicinsku organizaciju");
+      location.reload();
+    }, error => alert(error));
+  }
+  createTransOrg()
+  {
+    const options = {
+      headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+    };
+    
+   this.httpClient.post('https://192.168.2.148:45455/' + 'transportcompany/createtransportcompany?name='+this.nameTrans+'&location='+this.locTrans +'', options)
+     .subscribe((s) => {
+      console.log(s);
+      alert("Uspesno ste kreirali transportnu kompaniju ");
+      location.reload();
+    }, error => alert(error));
+  }
+  createLandfillOrg()
+  {
+    const options = {
+      headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+    };
+    
+   this.httpClient.post('https://192.168.2.148:45455/' + 'landfillorganization/createlandfillorganization?name='+this.nameLandfill+'&location='+this.locLandfill +'', options)
+     .subscribe((s) => {
+      console.log(s);
+      alert("Uspesno ste kreirali deponiju");
+      location.reload();
+    }, error => alert(error));
+  }
+
+  deleteMedOrg(med: MedicalOrganization)
+  {
+    
+   this.httpClient.delete('https://192.168.2.148:45455/' + 'medicalorganization/deletemedicalorganization?organizationGuid='+med.guid)
+     .subscribe((s) => {
+      console.log(s);
+      alert("Uspesno ste obrisali medicinsku ustanovu");
+      location.reload();
+    }, error => alert(error));
+  }
+  deleteTransOrg(trans: TransportOrganization)
+  {
+    this.httpClient.delete('https://192.168.2.148:45455/' + 'medicalorganization/deletemedicalorganization?organizationGuid='+trans.guid)
+     .subscribe((s) => {
+      console.log(s);
+      alert("Uspesno ste obrisali medicinsku ustanovu");
+      location.reload();
+    }, error => alert(error));
+  }
+  deleteLandfillOrg(land: LandfillOrganization)
+  {
+    this.httpClient.delete('https://192.168.2.148:45455/' + 'medicalorganization/deletemedicalorganization?organizationGuid='+land.guid)
+     .subscribe((s) => {
+      console.log(s);
+      alert("Uspesno ste obrisali medicinsku ustanovu");
+      location.reload();
+    }, error => alert(error));
+  }
+ 
 }
 
-
-interface Pollution {
-  sensorId: string;
-  sensorData: number;
-  collectTime: Date;
+interface MedicalOrganization{
+  guid: string;
+  name: string;
+  location: string;
 }
 
-interface AlertPollution {
-  sensorId: string;
-  sensorData: number;
-  collectTime: Date;
-  about: string;
+interface TransportOrganization{
+  guid: string;
+  name: string;
+  location: string;
+}
+
+interface LandfillOrganization{
+  guid: string;
+  name: string;
+  location: string;
+}
+class ApplicationUser {
+  firstname: string;
+  lastname:string;
+  username: string;
+  orgname: string;
+  orglocation: string;
 }

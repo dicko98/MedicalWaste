@@ -49,7 +49,7 @@ export class MedicalComponent implements AfterViewInit {
     };
     
     
-   this.httpClient.post('https://192.168.2.148:45455/' + 'package/createpackage?name='+this.name+'&weight='+this.weight+'&username='+ localStorage.getItem("username") + '', options)
+   this.httpClient.post('https://192.168.2.148:45455/' + 'package/createpackage?name='+this.name+'&weight='+this.weight+'&username='+ this.currentUser.username + '', options)
      .subscribe((s) => {
       console.log(s);
       alert("Uspesno ste registrovali medicinski otpad - paket!");

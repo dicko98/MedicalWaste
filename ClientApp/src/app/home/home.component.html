@@ -1,77 +1,61 @@
 <h1>Medical Waste soft</h1>
-<p>Aplikacija za praćenje pravilnog odlaganja medicinskog otpada</p>
+<p>Aplikacija za praćenje pravilnog odlaganja medicinskog otpada. Ova strana je admin strana na kojoj se mogu videti mnoge CRUD operacije vezane za dati sistem.</p>
+
+<h4>Administrator panel</h4>
 <p>&nbsp;</p>
-<h5>Prikaz po filterima i označavanje određenog podatka alarmantnim</h5>
-<mat-form-field appearance="fill">
-  <mat-label>Sensor</mat-label>
-  <mat-select (selectionChange)="selected($event)" name="sensor">
-    <mat-option *ngFor="let s of sensors" [value]="s">
-      {{s}}
+<h5>Medicinske organizacije</h5>
+<p>Dodavanje nove medicinske ustanove</p>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Dodajte ime ustanove</mat-label>
+  <input [(ngModel)]="nameMed" matInput placeholder="Npr. Kliniciki centar" >
+</mat-form-field>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Mesto</mat-label>
+  <input [(ngModel)]="locMed" matInput placeholder="Npr. Nis" >
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="createMedOrg()">Kreiraj</button>
+
+<p>Dodavanje zaposlenog u postojeću medicinsku organizaciju</p>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Medicinske organizacije</mat-label>
+  <mat-select [(ngModel)]="selectedMed" name="sensor">
+    <mat-option *ngFor="let med of medorgs" [value]="med.guid">
+      {{med.name}} {{med.location}}
     </mat-option>
  </mat-select>
 </mat-form-field>
-
-<label>Od</label>
-<mat-form-field>
-  <input matInput [matDatepicker]="myDatePicker" [(ngModel)]="dateFrom">
-  <mat-datepicker-toggle matSuffix [for]="myDatePicker" ></mat-datepicker-toggle>
-  <mat-datepicker #myDatePicker></mat-datepicker>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Nepovezani korisnici</mat-label>
+  <mat-select [(ngModel)]="selectedMedUser" name="sensor">
+    <mat-option *ngFor="let user of users" [value]="user.username">
+      {{user.firstname}} {{user.lastname}} ({{user.username}}) 
+    </mat-option>
+ </mat-select>
 </mat-form-field>
+<button mat-raised-button color="primary" (click)="connectMedUser()">Konektuj</button>
 
-<label>Do</label>
-<mat-form-field>
-  <input matInput [matDatepicker]="myDatePicker2" [(ngModel)]="dateTo">
-  <mat-datepicker-toggle matSuffix [for]="myDatePicker2" ></mat-datepicker-toggle>
-  <mat-datepicker #myDatePicker2></mat-datepicker>
-</mat-form-field>
-
-
-<button mat-raised-button color="primary" (click)="showData()">Prikazi</button>
-
-<!--table class='table table-striped' aria-labelledby="tableLabel" *ngIf="pollutions">
-  <thead>
-    <tr>
-      <th>Sensor Id</th>
-      <th>Vrednost </th>
-      <th>Vremenski trenutak</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let pollution of pollutions">
-      <td>{{ pollution.sensorId }}</td>
-      <td>{{ pollution.sensorData }}</td>
-      <td>{{ pollution.collectTime }}</td>
-    </tr>
-  </tbody>
-</table-->
-
-
-
+<p>Prikaz medicinskih organizacija</p>
 <div class="mat-elevation-z8" >
   <table style="width: 100%;" mat-table [dataSource]="dataSource">
 
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> Id senzora </th>
-      <td mat-cell *matCellDef="let pollution"> {{pollution.sensorId}} </td>
+    <ng-container matColumnDef="med">
+      <th mat-header-cell *matHeaderCellDef> Medicinska ustanova </th>
+      <td mat-cell *matCellDef="let medorg"> {{medorg.name}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="data">
-      <th mat-header-cell *matHeaderCellDef> Vrednost </th>
-      <td mat-cell *matCellDef="let pollution"> {{ pollution.sensorData }} </td>
+    <ng-container matColumnDef="loc">
+      <th mat-header-cell *matHeaderCellDef> Lokacija </th>
+      <td mat-cell *matCellDef="let medorg"> {{ medorg.location }} </td>
     </ng-container>
 
-    <ng-container matColumnDef="time">
-      <th mat-header-cell *matHeaderCellDef> Vreme </th>
-      <td mat-cell *matCellDef="let pollution"> {{ pollution.collectTime }} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="alr">
-      <th mat-header-cell *matHeaderCellDef> Uzbunjivanje </th>
-      <td mat-cell *matCellDef="let pollution"> <button
+    <ng-container matColumnDef="del">
+      <th mat-header-cell *matHeaderCellDef> Brisanje </th>
+      <td mat-cell *matCellDef="let medorg"> <button
         mat-button
         color="warn"
-        (click)="createAlertPollution(pollution, $event)"> Oznaci </button></td>
+        (click)="deleteMedOrg(medorg)"> Obrisi </button></td>
     </ng-container>
+
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -80,39 +64,58 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
 
-
 <p>&nbsp;</p>
-<h5>Prikaz alarmantnih podataka i označavanje istih rešenim</h5>
+<h5>Kompanije za transport </h5>
+<p>Dodavanje nove kompanije</p>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Dodajte ime kompanije</mat-label>
+  <input [(ngModel)]="nameTrans" matInput placeholder="Ime kompanije" >
+</mat-form-field>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Mesto</mat-label>
+  <input [(ngModel)]="locTrans" matInput placeholder="Npr. Nis" >
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="createTransOrg()">Kreiraj</button>
 
+<p>Dodavanje zaposlenog u postojeću kompaniju</p>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Kompanije za transport</mat-label>
+  <mat-select [(ngModel)]="selectedTrans" name="sensor">
+    <mat-option *ngFor="let trans of transportorgs" [value]="trans.guid">
+      {{trans.name}} {{trans.location}}
+    </mat-option>
+ </mat-select>
+</mat-form-field>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Nepovezani korisnici</mat-label>
+  <mat-select [(ngModel)]="selectedTransUser" name="sensor">
+    <mat-option *ngFor="let user of users" [value]="user.username">
+      {{user.firstname}} {{user.lastname}} ({{user.username}}) 
+    </mat-option>
+ </mat-select>
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="connectTransUser()">Konektuj</button>
+
+<p>Prikaz transportnih kompanije</p>
 <div class="mat-elevation-z8" >
   <table style="width: 100%;" mat-table [dataSource]="dataSource2">
 
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> Id senzora </th>
-      <td mat-cell *matCellDef="let alertpollution"> {{alertpollution.sensorId}} </td>
+    <ng-container matColumnDef="transportorg">
+      <th mat-header-cell *matHeaderCellDef>Kompanija za transport </th>
+      <td mat-cell *matCellDef="let trans"> {{trans.name}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="data">
-      <th mat-header-cell *matHeaderCellDef> Vrednost </th>
-      <td mat-cell *matCellDef="let alertpollution"> {{ alertpollution.sensorData }} </td>
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef> Lokacija </th>
+      <td mat-cell *matCellDef="let trans"> {{ trans.location }} </td>
     </ng-container>
 
-    <ng-container matColumnDef="time">
-      <th mat-header-cell *matHeaderCellDef> Vreme </th>
-      <td mat-cell *matCellDef="let alertpollution"> {{ alertpollution.collectTime }} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="about">
-      <th mat-header-cell *matHeaderCellDef> Status </th>
-      <td mat-cell *matCellDef="let alertpollution"> {{ alertpollution.about }} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="alr">
-      <th mat-header-cell *matHeaderCellDef> Reseno </th>
-      <td mat-cell *matCellDef="let alertpollution"> <button
+    <ng-container matColumnDef="del">
+      <th mat-header-cell *matHeaderCellDef> Brisanje </th>
+      <td mat-cell *matCellDef="let trans"> <button
         mat-button
         color="warn"
-        (click)="updateAlertPollution(alertpollution, $event)"> Oznaci </button></td>
+        (click)="deleteTransOrg(trans)"> Obrisi </button></td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
@@ -122,3 +125,64 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
 
+<p>&nbsp;</p>
+<h5>Deponije </h5>
+<p>Dodavanje nove deponije</p>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Dodajte ime deponije</mat-label>
+  <input [(ngModel)]="nameLandfill" matInput placeholder="Npr. Gradska deponije" >
+</mat-form-field>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Mesto</mat-label>
+  <input [(ngModel)]="locLandfill" matInput placeholder="Npr. Bulvar Nikole Tesle, Nis" >
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="createLandfillOrg()">Kreiraj</button>
+
+<p>Dodavanje zaposlenog u postojeću deponiju</p>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Deponije</mat-label>
+  <mat-select [(ngModel)]="selectedLandfill" name="sensor">
+    <mat-option *ngFor="let land of landfillorgs" [value]="land.guid">
+      {{land.name}} {{land.location}}
+    </mat-option>
+ </mat-select>
+</mat-form-field>
+<mat-form-field appearance="fill" style="margin-right: 20px;">
+  <mat-label>Nepovezani korisnici</mat-label>
+  <mat-select [(ngModel)]="selectedLandfillUser" name="sensor">
+    <mat-option *ngFor="let user of users" [value]="user.username">
+      {{user.firstname}} {{user.lastname}} ({{user.username}}) 
+    </mat-option>
+ </mat-select>
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="connectLandfillUser()">Konektuj</button>
+<p>Prikaz deponija</p>
+<div class="mat-elevation-z8" >
+  <table style="width: 100%;" mat-table [dataSource]="dataSource3">
+
+    <ng-container matColumnDef="landfillorg">
+      <th mat-header-cell *matHeaderCellDef>Deponija </th>
+      <td mat-cell *matCellDef="let land"> {{land.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef> Lokacija </th>
+      <td mat-cell *matCellDef="let land"> {{ land.location }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="del">
+      <th mat-header-cell *matHeaderCellDef> Brisanje </th>
+      <td mat-cell *matCellDef="let land"> <button
+        mat-button
+        color="warn"
+        (click)="deleteLandfillOrg(land)"> Obrisi </button></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+<p>&nbsp;</p>

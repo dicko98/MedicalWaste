@@ -28,14 +28,14 @@ export class LandfillComponent implements AfterViewInit {
     //this.dataSource.paginator = this.paginator;
   }
   
-  public pickUp() {
+   store() {
     const options = {
       headers: new HttpHeaders({
       'Content-Type': 'application/json',
     })
     };
 
-    this.httpClient.put('https://192.168.2.148:45455/' + 'user/storepackage?barcode='+this.barcode+'&weight='+this.weight+'&username='+ localStorage.getItem("username") + '', options)
+    this.httpClient.put('https://192.168.2.148:45455/' + 'user/storepackage?barcode='+this.barcode+'&weight='+this.weight+'&username='+ this.currentUser.username + '', options)
      .subscribe((s) => {
       console.log(s);
       alert("Uspesno ste registrovali skladistenje medicinskog otpad - paket!");
