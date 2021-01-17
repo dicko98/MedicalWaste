@@ -64,18 +64,13 @@ namespace MedicallWaste.Controllers
             session.RunAsync("MATCH (o:MedicalOrganization),(u:ApplicationUser) WHERE o.name = '" + organization + "' AND u.username = '" + username + "' CREATE(o) -[r: HAS_EMPLOYEE]->(u) RETURN type(r)");
         }
 
-        [HttpDelete(nameof(DeleteMedicalOrganization))]
-        public void DeleteMedicalOrganization(string organizationGuid)
-        {
-            var session = driver.AsyncSession();
-            session.RunAsync("MATCH (org:MedicalOrganization) WHERE org.guid = '" + organizationGuid + "' DELETE org");
-        }
-
         [HttpDelete(nameof(DeleteConnectedMedicalOrganization))]
         public void DeleteConnectedMedicalOrganization(string organizationGuid)
         {
             var session = driver.AsyncSession();
             session.RunAsync("OPTIONAL MATCH ()-[p]->(o:MedicalOrganization) WHERE o.guid = '" + organizationGuid + "' DELETE p, o");
+
+            session.RunAsync("MATCH (org:MedicalOrganization) WHERE org.guid = '" + organizationGuid + "' DELETE org");
         }
     }
 }
