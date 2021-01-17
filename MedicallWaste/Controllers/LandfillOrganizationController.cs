@@ -68,10 +68,17 @@ namespace MedicallWaste.Controllers
         }
 
         [HttpDelete(nameof(DeleteLandfillOrganization))]
-        public void DeleteLandfillOrganization(LandfillOrganization organization)
+        public void DeleteLandfillOrganization(string organizationGuid)
         {
             var session = driver.AsyncSession();
-            session.RunAsync("MATCH (l:TransportCompany) WHERE l.guid = '" + organization.guid + "' DELETE l");
+            session.RunAsync("MATCH (l:LandfillOrganization) WHERE l.guid = '" + organizationGuid + "' DELETE l");
+        }
+
+        [HttpDelete(nameof(DeleteConnectedLandfillOrganization))]
+        public void DeleteConnectedLandfillOrganization(string organizationGuid)
+        {
+            var session = driver.AsyncSession();
+            session.RunAsync("OPTIONAL MATCH ()-[p]->(l:LandfillOrganization) WHERE l.guid = '" + organizationGuid + "' DELETE p, l");
         }
     }
 }
