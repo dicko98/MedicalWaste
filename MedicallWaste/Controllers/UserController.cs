@@ -45,24 +45,6 @@ namespace MedicallWaste.Controllers
             return Ok(users);
         }
 
-        [HttpPost(nameof(CreateUser))]
-        public async Task<IActionResult> CreateUser([FromBody]ApplicationUser user)
-        {
-            var session = driver.AsyncSession();
-
-            var statementText = new StringBuilder();
-            statementText.Append("CREATE (a:ApplicationUser {username: $username, password: $password, firstname: $firstname, lastname: $lastname})");
-            var statementParameters = new Dictionary<string, object>
-            {
-                {"username", user.username},
-                {"password", user.password},
-                {"firstname", user.firstname },
-                {"lastname", user.lastname }
-            };
-            var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString(), statementParameters));
-            return StatusCode(201, "Node has been created in the database");
-        }
-
         [HttpGet(nameof(GetMedicalUser))]
         public async Task<IActionResult> GetMedicalUser(string username)
         { 
@@ -84,6 +66,70 @@ namespace MedicallWaste.Controllers
                 orglocation = res.MedOrg.location
             };
             return Ok(applicationUserDTO);
+        }
+
+        [HttpGet(nameof(GetTransportUser))]
+        public async Task<IActionResult> GetTransportUser(string username)
+        {
+            var query = client.Cypher
+                .Match("(user:ApplicationUser)-[r:WORKS_AT]->(transport:TransportCompany)")
+                .Return(() => new
+                {
+                    User = Return.As<ApplicationUser>("user"),
+                    Transport = Return.As<TransportCompany>("transport")
+                });
+            var res = query.Results.FirstOrDefault();
+
+            ApplicationUserDTO applicationUserDTO = new ApplicationUserDTO
+            {
+                firstname = res.User.firstname,
+                lastname = res.User.lastname,
+                username = res.User.username,
+                orgname = res.Transport.name,
+                orglocation = res.Transport.location
+            };
+            return Ok(applicationUserDTO);
+        }
+
+        [HttpGet(nameof(GetLandfillUser))]
+        public async Task<IActionResult> GetLandfillUser(string username)
+        {
+            var query = client.Cypher
+                .Match("(user:ApplicationUser)-[r:WORKS_AT]->(landfill:LandfillOrganization)")
+                .Return(() => new
+                {
+                    User = Return.As<ApplicationUser>("user"),
+                    Landfill = Return.As<TransportCompany>("landfill")
+                });
+            var res = query.Results.FirstOrDefault();
+
+            ApplicationUserDTO applicationUserDTO = new ApplicationUserDTO
+            {
+                firstname = res.User.firstname,
+                lastname = res.User.lastname,
+                username = res.User.username,
+                orgname = res.Landfill.name,
+                orglocation = res.Landfill.location
+            };
+            return Ok(applicationUserDTO);
+        }
+
+        [HttpPost(nameof(CreateUser))]
+        public async Task<IActionResult> CreateUser([FromBody] ApplicationUser user)
+        {
+            var session = driver.AsyncSession();
+
+            var statementText = new StringBuilder();
+            statementText.Append("CREATE (a:ApplicationUser {username: $username, password: $password, firstname: $firstname, lastname: $lastname})");
+            var statementParameters = new Dictionary<string, object>
+            {
+                {"username", user.username},
+                {"password", user.password},
+                {"firstname", user.firstname },
+                {"lastname", user.lastname }
+            };
+            var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString(), statementParameters));
+            return StatusCode(201, "Node has been created in the database");
         }
 
         [HttpPost(nameof(Login))]
