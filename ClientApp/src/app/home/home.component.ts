@@ -114,7 +114,7 @@ export class HomeComponent implements AfterViewInit {
     })
     };
     
-   this.httpClient.post('https://192.168.2.148:45455/' + 'user/worksattransport?username='+this.selectedTransUser+'&transportGuid='+this.selectedTrans +'', options)
+   this.httpClient.post('https://192.168.2.148:45455/' + 'user/worksattransport?username='+this.selectedTransUser+'&transportGuid='+this.selectedTrans, options)
      .subscribe((s) => {
       console.log(s);
       alert("Uspesno ste spojili zaposlenog sa transportnom kompanijom");

@@ -39,6 +39,8 @@ namespace MedicallWaste.Controllers
         [HttpGet(nameof(GetMedicalTrack))]
         public async Task<IActionResult> GetMedicalTrack(string username)
         {
+            if (username == "undefined")
+                return Ok(null);
             var query = client.Cypher
                 .Match("(user:ApplicationUser)-[w:WORKS_AT]->(med:MedicalOrganization) WHERE user.username='" + username + "'")
                 .Return(() => new
@@ -49,41 +51,88 @@ namespace MedicallWaste.Controllers
             var res = query.Results.FirstOrDefault();
 
             var query2 = client.Cypher
-                .Match("(us:ApplicationUser)-[wer:WORKS_AT]->(landorg:LandfillOrganization), (user:ApplicationUser)-[r:MADE|PICKED_UP|STORED]->(p:Package), (u:ApplicationUser)-[w:WORKS_AT]->(m:MedicalOrganization), (ua:ApplicationUser)-[wo:WORKS_AT]->(t:TransportCompany)  where m.guid='" + res.MedOrg.guid + "'")
+                .Match("(user:ApplicationUser)-[w:WORKS_AT]->(med:MedicalOrganization) where med.guid='" + res.MedOrg.guid + "'")
                 .Return(() => new
                 {
-                    LandFillUser = Return.As<ApplicationUser>("us"),
-                    LandFill = Return.As<LandfillOrganization>("landorg"),
-                    User = Return.As<ApplicationUser>("user"),
-                    Package = Return.As<Package>("p"),
-                    MedicalOrg = Return.As<MedicalOrganization>("m"),
-                    TransportUser = Return.As<ApplicationUser>("ua"),
-                    TransportCompany = Return.As<TransportCompany>("t")
+                    User = Return.As<ApplicationUser>("user")
                 });
-            var result = query2.Results.GroupBy(x => x.Package.barcode).Select(g => g.First()).ToList();
 
+            var users = query2.Results.ToList();
+           
             IList<Package> packages = new List<Package>();
-
-            foreach (var p in result)
+            foreach(var u in users)
             {
-                Package package = new Package
-                {
-                    barcode = p.Package.barcode,
-                    name = p.Package.name,
-                    weight = p.Package.weight,
-                    pickedweight = p.Package.pickedweight,
-                    storedweight = p.Package.storedweight,
-                    datecreated = p.Package.datecreated,
-                    medorganization = res.MedOrg,
-                    landfillorganization = p.LandFill,
-                    transportcompany = p.TransportCompany,
-                    medicaluser = res.User,
-                    transportuser = p.TransportUser,
-                    deponyuser = p.LandFillUser
-                };
-                packages.Add(package);
+                var query3 = client.Cypher
+               .Match("(u:ApplicationUser)-[m:MADE]->(p:Package) where u.username='"+u.User.username+"'")
+               .Return(() => new
+               {
+                   Package = Return.As<Package>("p")
+               });
+                var pa = query3.Results.ToList();
+                foreach (var p in pa)
+                    packages.Add(p.Package);
             }
-            
+
+            foreach(var p in packages)
+            {
+                var query4 = client.Cypher
+               .Match("(t:TransportCompany)<-[w:WORKS_AT]-(u:ApplicationUser)-[up:PICKED_UP]->(p:Package) where p.barcode='"+p.barcode+"'")
+               .Return(() => new
+               {
+                   Transport = Return.As<TransportCompany>("t")
+               });
+                 
+                if (query4.Results.ToList().Count > 0)
+                    p.transportcompany = query4.Results.FirstOrDefault().Transport;
+
+                var query5 = client.Cypher
+               .Match("(l:LandfillOrganization)<-[w:WORKS_AT]-(u:ApplicationUser)-[s:STORED]->(p:Package) where p.barcode='"+p.barcode+"'")
+               .Return(() => new
+               {
+                   Landfill = Return.As<LandfillOrganization>("l")
+               });
+                
+                if(query5.Results.ToList().Count > 0)
+                    p.landfillorganization = query5.Results.FirstOrDefault().Landfill;
+
+            }
+
+            //var query2 = client.Cypher
+            //    .Match("(us:ApplicationUser)-[wer:WORKS_AT]->(landorg:LandfillOrganization), (user:ApplicationUser)-[r:MADE|PICKED_UP|STORED]->(p:Package), (u:ApplicationUser)-[w:WORKS_AT]->(m:MedicalOrganization), (ua:ApplicationUser)-[wo:WORKS_AT]->(t:TransportCompany)  where m.guid='" + res.MedOrg.guid + "'")
+            //    .Return(() => new
+            //    {
+            //        LandFillUser = Return.As<ApplicationUser>("us"),
+            //        LandFill = Return.As<LandfillOrganization>("landorg"),
+            //        User = Return.As<ApplicationUser>("user"),
+            //        Package = Return.As<Package>("p"),
+            //        MedicalOrg = Return.As<MedicalOrganization>("m"),
+            //        TransportUser = Return.As<ApplicationUser>("ua"),
+            //        TransportCompany = Return.As<TransportCompany>("t")
+            //    });
+            //var result = query2.Results.GroupBy(x => x.Package.barcode).Select(g => g.First()).ToList();
+
+            //IList<Package> packages = new List<Package>();
+
+            //foreach (var p in result)
+            //{
+            //    Package package = new Package
+            //    {
+            //        barcode = p.Package.barcode,
+            //        name = p.Package.name,
+            //        weight = p.Package.weight,
+            //        pickedweight = p.Package.pickedweight,
+            //        storedweight = p.Package.storedweight,
+            //        datecreated = p.Package.datecreated,
+            //        medorganization = res.MedOrg,
+            //        landfillorganization = p.LandFill,
+            //        transportcompany = p.TransportCompany,
+            //        medicaluser = res.User,
+            //        transportuser = p.TransportUser,
+            //        deponyuser = p.LandFillUser
+            //    };
+            //    packages.Add(package);
+            //}
+
             return Ok(packages);
         }
 

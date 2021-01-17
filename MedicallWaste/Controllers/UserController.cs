@@ -55,9 +55,11 @@ namespace MedicallWaste.Controllers
                     User = Return.As<ApplicationUser>("user"),
                     MedOrg = Return.As<MedicalOrganization>("med")
                 });
-            var res = query.Results.FirstOrDefault();
+            var res = query.Results.Where(x=>x.User.username==username).FirstOrDefault();
+            ApplicationUserDTO applicationUserDTO = null;
 
-            ApplicationUserDTO applicationUserDTO = new ApplicationUserDTO
+            if(res != null)
+            applicationUserDTO = new ApplicationUserDTO
             {
                 firstname = res.User.firstname,
                 lastname = res.User.lastname,
@@ -78,9 +80,11 @@ namespace MedicallWaste.Controllers
                     User = Return.As<ApplicationUser>("user"),
                     Transport = Return.As<TransportCompany>("transport")
                 });
-            var res = query.Results.FirstOrDefault();
+            var res = query.Results.Where(x => x.User.username == username).FirstOrDefault();
 
-            ApplicationUserDTO applicationUserDTO = new ApplicationUserDTO
+            ApplicationUserDTO applicationUserDTO = null;
+            if(res!=null)
+            applicationUserDTO = new ApplicationUserDTO
             {
                 firstname = res.User.firstname,
                 lastname = res.User.lastname,
@@ -101,9 +105,10 @@ namespace MedicallWaste.Controllers
                     User = Return.As<ApplicationUser>("user"),
                     Landfill = Return.As<TransportCompany>("landfill")
                 });
-            var res = query.Results.FirstOrDefault();
-
-            ApplicationUserDTO applicationUserDTO = new ApplicationUserDTO
+            var res = query.Results.Where(x=>x.User.username==username).FirstOrDefault();
+            ApplicationUserDTO applicationUserDTO = null;
+            if (res != null)
+            applicationUserDTO = new ApplicationUserDTO
             {
                 firstname = res.User.firstname,
                 lastname = res.User.lastname,

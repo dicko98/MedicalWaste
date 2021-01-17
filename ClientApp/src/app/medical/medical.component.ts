@@ -39,6 +39,21 @@ export class MedicalComponent implements AfterViewInit {
     http.get<Package[]>('https://192.168.2.148:45455/' + 'package/getmedicaltrack?username=' + localStorage.getItem("username")).subscribe(result => {
       console.log(result);  
     this.packages = result;
+    this.packages.forEach(p => {
+      if(p.landfillorganization===null)
+      {
+        p.landfillorganization = new LandfillOrganization();
+        p.landfillorganization.name = "Nije smesteno";
+        p.landfillorganization.location = " ";
+      }
+      if(p.transportcompany===null)
+      {
+        p.transportcompany = new TransportCompany();
+        p.transportcompany.name = "Nije pokupljeno";
+        p.transportcompany.location =" ";
+      }
+      
+    });
     this.dataSource = new MatTableDataSource<Package>(result);
     this.ngAfterViewInit();
     }, error => console.error(error));
