@@ -97,42 +97,6 @@ namespace MedicallWaste.Controllers
 
             }
 
-            //var query2 = client.Cypher
-            //    .Match("(us:ApplicationUser)-[wer:WORKS_AT]->(landorg:LandfillOrganization), (user:ApplicationUser)-[r:MADE|PICKED_UP|STORED]->(p:Package), (u:ApplicationUser)-[w:WORKS_AT]->(m:MedicalOrganization), (ua:ApplicationUser)-[wo:WORKS_AT]->(t:TransportCompany)  where m.guid='" + res.MedOrg.guid + "'")
-            //    .Return(() => new
-            //    {
-            //        LandFillUser = Return.As<ApplicationUser>("us"),
-            //        LandFill = Return.As<LandfillOrganization>("landorg"),
-            //        User = Return.As<ApplicationUser>("user"),
-            //        Package = Return.As<Package>("p"),
-            //        MedicalOrg = Return.As<MedicalOrganization>("m"),
-            //        TransportUser = Return.As<ApplicationUser>("ua"),
-            //        TransportCompany = Return.As<TransportCompany>("t")
-            //    });
-            //var result = query2.Results.GroupBy(x => x.Package.barcode).Select(g => g.First()).ToList();
-
-            //IList<Package> packages = new List<Package>();
-
-            //foreach (var p in result)
-            //{
-            //    Package package = new Package
-            //    {
-            //        barcode = p.Package.barcode,
-            //        name = p.Package.name,
-            //        weight = p.Package.weight,
-            //        pickedweight = p.Package.pickedweight,
-            //        storedweight = p.Package.storedweight,
-            //        datecreated = p.Package.datecreated,
-            //        medorganization = res.MedOrg,
-            //        landfillorganization = p.LandFill,
-            //        transportcompany = p.TransportCompany,
-            //        medicaluser = res.User,
-            //        transportuser = p.TransportUser,
-            //        deponyuser = p.LandFillUser
-            //    };
-            //    packages.Add(package);
-            //}
-
             return Ok(packages);
         }
 
