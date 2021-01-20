@@ -49,6 +49,8 @@ namespace MedicallWaste.Controllers
                     MedOrg = Return.As<MedicalOrganization>("med")
                 });
             var res = query.Results.FirstOrDefault();
+            if (query.Results.ToList().Count == 0)
+                return Ok(null);
 
             var query2 = client.Cypher
                 .Match("(user:ApplicationUser)-[w:WORKS_AT]->(med:MedicalOrganization) where med.guid='" + res.MedOrg.guid + "'")
